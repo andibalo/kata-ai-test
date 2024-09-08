@@ -27,7 +27,14 @@ Then run the following command to enable tunneling so your service is publicly a
 
 You will receive a url to access your service for example `https://2ecd-180-254-68-187.ngrok-free.app`
 
-Use this URL as value for the key `pokemonBEURL` in kata.ai platform config
+Use this URL as value for the key `pokemonBEURL` in kata.ai platform config. After setting the config deploy chat bot.
+
+You can access the bot using the following link
+
+````
+t.me/Katapokemon_bot
+````
+
 ## Architecture
 
 You can view the high level architecture [here](https://drive.google.com/file/d/1gDttQu303wf1xGRSR0ruySMLHnUIqb8r/view?usp=sharing) 
@@ -61,3 +68,9 @@ You can view the high level architecture [here](https://drive.google.com/file/d/
 
 https://drive.google.com/file/d/1fRtK8-3kVttMkq4lzx8rmgj-1RxEZumj/view?usp=sharing
 
+## Bot
+You can access the bot by using the following link. **Ensure** you already follow the installation steps before accessing
+
+````
+t.me/Katapokemon_bot
+````
