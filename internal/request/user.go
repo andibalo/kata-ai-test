@@ -1,10 +1,13 @@
 package request
 
 type RegisterUserRequest struct {
-	Name  string `json:"name"`
-	Email string `json:"email"`
+	Name            string `json:"name" binding:"required"`
+	Email           string `json:"email" binding:"required"`
+	ChannelUsername string `json:"channel_username"`
+	ChannelType     string `json:"channel_type"`
 }
 
 type LoginRequest struct {
-	Email string `json:"email"`
+	ChannelUsername string `json:"channel_username"`
+	ChannelType     string `json:"channel_type"`
 }

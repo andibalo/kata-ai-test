@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"github.com/google/uuid"
+	"pokemon-be/internal/apperr"
 	"pokemon-be/internal/config"
 	"pokemon-be/internal/model"
 	"pokemon-be/internal/repository"
@@ -26,23 +27,25 @@ func NewUserService(cfg config.Config, userRepo repository.UserRepository) UserS
 
 func (s *userService) CreateUser(data *request.RegisterUserRequest) error {
 
-	existingUser, err := s.userRepo.GetByEmail(data.Email)
+	existingUser, err := s.userRepo.GetByChannelUsernameAndType(data.ChannelUsername, data.ChannelType)
 	if err != nil && !errors.Is(err, sql.ErrNoRows) {
-		s.cfg.Logger().Error().Err(err).Msg("[CreateUser] Failed to get user by email")
+		s.cfg.Logger().Error().Err(err).Msg("[CreateUser] Failed to get user by channel username and type")
 		return err
 	}
 
 	if existingUser != nil {
 		s.cfg.Logger().Error().Err(err).Msg("[CreateUser] User already exists")
-		return err
+		return errors.New("User already exists")
 	}
 
 	user := &model.User{
-		ID:             uuid.NewString(),
-		Name:           data.Name,
-		Email:          data.Email,
-		LastAccessedAt: time.Now(),
-		CreatedAt:      time.Now(),
+		ID:              uuid.NewString(),
+		Name:            data.Name,
+		Email:           data.Email,
+		ChannelUsername: data.ChannelUsername,
+		ChannelType:     data.ChannelType,
+		LastAccessedAt:  time.Now(),
+		CreatedAt:       time.Now(),
 	}
 
 	err = s.userRepo.Save(user)
@@ -56,18 +59,18 @@ func (s *userService) CreateUser(data *request.RegisterUserRequest) error {
 
 func (s *userService) Login(data *request.LoginRequest) (*model.User, error) {
 
-	existingUser, err := s.userRepo.GetByEmail(data.Email)
+	existingUser, err := s.userRepo.GetByChannelUsernameAndType(data.ChannelUsername, data.ChannelType)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			s.cfg.Logger().Error().Err(err).Msg("[Login] Invalid email/password")
-			return existingUser, err
+			return existingUser, apperr.ErrNotFound
 		}
 
-		s.cfg.Logger().Error().Err(err).Msg("[Login] Failed to get user by email")
+		s.cfg.Logger().Error().Err(err).Msg("[Login] Failed to get user by channel username and type")
 		return existingUser, err
 	}
 
-	err = s.userRepo.UpdateUserLastAccessedAt(data.Email)
+	err = s.userRepo.UpdateUserLastAccessedAtByChannelUsernameAndType(data.ChannelUsername, data.ChannelType)
 	if err != nil {
 		s.cfg.Logger().Error().Err(err).Msg("[Login] Failed to update user last accessed at")
 		return existingUser, err

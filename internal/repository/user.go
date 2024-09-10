@@ -48,14 +48,30 @@ func (r *userRepository) GetByEmail(email string) (*model.User, error) {
 	return user, nil
 }
 
-func (r *userRepository) UpdateUserLastAccessedAt(email string) error {
+func (r *userRepository) GetByChannelUsernameAndType(channelUsername, channelType string) (*model.User, error) {
+	user := &model.User{}
+
+	err := r.db.NewSelect().Model(user).
+		Where("channel_username = ?", channelUsername).
+		Where("channel_type = ?", channelType).
+		Scan(context.Background())
+
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
+
+func (r *userRepository) UpdateUserLastAccessedAtByChannelUsernameAndType(channelUsername, channelType string) error {
 	user := &model.User{}
 	user.LastAccessedAt = time.Now()
 
 	_, err := r.db.NewUpdate().
 		Model(user).
 		Column("last_accessed_at").
-		Where("email = ?", email).
+		Where("channel_username = ?", channelUsername).
+		Where("channel_type = ?", channelType).
 		Exec(context.Background())
 
 	if err != nil {
