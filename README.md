@@ -3,6 +3,18 @@
 
 Pokemon BE for kata.ai test
 
+Note: In this interation, thr chatbot will **only work in telegram**
+
+## Chatbot Flow
+![chatbot flow](chatbotflow.png)
+
+
+
+Intially the chatbot will check if our user is registered by calling our service Login API with the `channel_username` and `channel_type` data.
+If the user is already registered it will return success and the user will be able to start querying pokemon.
+
+Otherwise, the chatbot will ask for name and email as well as get `channel_username` (ie. username in telegram) and `channel_type`
+data by retriveing it from `metadata` object and submit it to our Register API.
 
 ## Installation
 
@@ -37,7 +49,7 @@ t.me/Katapokemon_bot
 
 ## Architecture
 
-You can view the high level architecture [here](https://drive.google.com/file/d/1gDttQu303wf1xGRSR0ruySMLHnUIqb8r/view?usp=sharing) 
+You can view the high level architecture [here](https://docs.google.com/document/d/1deJrplqLJ8QGyYABiC_1I-vAdSWDYoVGufBqZl9KfT8/edit?usp=sharing) 
 ## API Reference
 
 #### Register User
@@ -50,6 +62,8 @@ You can view the high level architecture [here](https://drive.google.com/file/d/
 | :-------- | :------- | :------------------------- |
 | `name` | `string` | **Required** |
 | `email`      | `string` | **Required** |
+| `channel_username` | `string` | **Required** |
+| `channel_type`     | `string` | **Required** |
 
 #### Login
 
@@ -57,16 +71,17 @@ You can view the high level architecture [here](https://drive.google.com/file/d/
   POST /api/v1/user/login
 ```
 
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `email`      | `string` | **Required** |
+| Parameter          | Type     | Description                       |
+|:-------------------| :------- | :-------------------------------- |
+| `channel_username` | `string` | **Required** |
+| `channel_type`     | `string` | **Required** |
 
 
 
 
 ## Demo
 
-https://drive.google.com/file/d/1fRtK8-3kVttMkq4lzx8rmgj-1RxEZumj/view?usp=sharing
+https://drive.google.com/file/d/1t2fJnyEHE7Ad-zDKra2DGd8F4OlO0MnG/view?usp=sharing
 
 ## Bot
 You can access the bot by using the following link. **Ensure** you already follow the installation steps before accessing
