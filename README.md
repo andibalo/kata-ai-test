@@ -3,7 +3,7 @@
 
 Pokemon BE for kata.ai test
 
-Note: In this interation, thr chatbot will **only work in telegram**
+Note: In this interation, the chatbot will **only work in telegram**
 
 ## Chatbot Flow
 ![chatbot flow](chatbotflow.png)
